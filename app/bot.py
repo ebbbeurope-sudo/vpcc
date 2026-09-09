@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import time
@@ -9,9 +10,9 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from app.core import database
+from app.core.config import SERVER_URL
 
 router = Router()
-SERVER_URL = "http://127.0.0.1:8000"
 bot_ref: Bot | None = None
 
 
