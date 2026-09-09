@@ -29,13 +29,18 @@ def gen_code() -> str:
 
 @router.message(CommandStart())
 async def cmd_start(m: Message):
-    await m.answer(
-        "🤖 VPCC — управляй своими ПК из Telegram.\n\n"
-        "1. Нажми «Добавить ПК» — получишь код.\n"
-        "2. Введи код в приложении на ПК.\n"
-        "3. Управляй ПК отсюда.",
-        reply_markup=main_menu(),
-    )
+    print(f"[START] got /start from user={m.from_user.id}", flush=True)
+    try:
+        await m.answer(
+            "🤖 VPCC — управляй своими ПК из Telegram.\n\n"
+            "1. Нажми «Добавить ПК» — получишь код.\n"
+            "2. Введи код в приложении на ПК.\n"
+            "3. Управляй ПК отсюда.",
+            reply_markup=main_menu(),
+        )
+        print("[START] answered ok", flush=True)
+    except Exception as e:
+        print(f"[START] error: {e}", flush=True)
 
 
 @router.callback_query(lambda c: c.data == "add_pc")
