@@ -116,17 +116,21 @@ def pcs_name(pc_id: int) -> str:
 async def cb_cmd(c: CallbackQuery):
     _, pc_id_s, cmd = c.data.split("_", 2)
     pc_id = int(pc_id_s)
+    url = f"{SERVER_URL}/api/command"
+    print(f"[CMD] user={c.from_user.id} pc={pc_id} cmd={cmd} url={url}", flush=True)
     async with httpx.AsyncClient(timeout=20) as client:
         try:
             r = await client.post(
-                f"{SERVER_URL}/api/command",
+                url,
                 json={"user_id": c.from_user.id, "pc_id": pc_id, "cmd": cmd, "params": {}},
             )
             r.raise_for_status()
             data = r.json()
-        except Exception:
+        except Exception as e:
+            print(f"[CMD] error: {e}", flush=True)
             await c.answer("Агент не ответил", show_alert=True)
             return
+    print(f"[CMD] resp ok={data.get('ok')}", flush=True)
     if cmd == "sysinfo":
         await c.message.answer(f"ℹ️ Инфо:\n{data.get('text', '')}")
     elif cmd == "screenshot":
