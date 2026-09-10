@@ -4,6 +4,7 @@ import string
 import time
 import traceback
 
+import httpx
 import pydantic
 import aiogram
 from aiogram import Bot, Dispatcher, Router
