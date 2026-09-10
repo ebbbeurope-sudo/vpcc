@@ -46,10 +46,12 @@ async def send_command(token: str, command: dict) -> dict:
         return {"ok": False, "error": "agent offline"}
     fut = asyncio.get_event_loop().create_future()
     _replies[token] = fut
+    print(f"[MGR] send cmd to {token[:6]}, replies={list(_replies.keys())}", flush=True)
     try:
         await ws.send_text(json.dumps(command))
         return await asyncio.wait_for(fut, timeout=15)
     except asyncio.TimeoutError:
+        print(f"[MGR] timeout, reply still pending for {token[:6]}", flush=True)
         return {"ok": False, "error": "timeout"}
     finally:
         _replies.pop(token, None)
@@ -57,5 +59,6 @@ async def send_command(token: str, command: dict) -> dict:
 
 def resolve_reply(token: str, data: dict):
     fut = _replies.get(token)
+    print(f"[MGR] resolve_reply {token[:6]} fut={fut is not None}", flush=True)
     if fut and not fut.done():
         fut.set_result(data)

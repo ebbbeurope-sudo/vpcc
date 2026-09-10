@@ -30,7 +30,9 @@ async def ws_endpoint(ws: WebSocket):
         while True:
             text = await ws.receive_text()
             data = json.loads(text)
+            print(f"[WS] recv token={token[:6]} type={data.get('type')}", flush=True)
             if data.get("type") == "result":
+                print(f"[WS] resolving reply for {token[:6]}", flush=True)
                 manager.resolve_reply(token, data.get("data", {}))
     except WebSocketDisconnect:
         pass
