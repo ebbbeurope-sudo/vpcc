@@ -22,8 +22,8 @@ bot_ref: Bot | None = None
 
 def main_menu():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton("🔗 Добавить ПК", callback_data="add_pc")],
-        [InlineKeyboardButton("🖥 Мои ПК", callback_data="my_pcs")],
+        [InlineKeyboardButton(text="🔗 Добавить ПК", callback_data="add_pc")],
+        [InlineKeyboardButton(text="🖥 Мои ПК", callback_data="my_pcs")],
     ])
 
 
@@ -56,8 +56,8 @@ async def cb_add_pc(c: CallbackQuery):
     code = gen_code()
     database.save_code(code, user_id, int(time.time()))
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton("🔄 Новый код", callback_data="add_pc")],
-        [InlineKeyboardButton("⬅️ Назад", callback_data="main")],
+        [InlineKeyboardButton(text="🔄 Новый код", callback_data="add_pc")],
+        [InlineKeyboardButton(text="⬅️ Назад", callback_data="main")],
     ])
     await c.message.edit_text(
         f"🔑 Твой код привязки:\n\n<code>{code}</code>\n\n"
@@ -76,10 +76,10 @@ async def cb_my_pcs(c: CallbackQuery):
         return
     kb = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(
-            f"{'🟢' if p['online'] else '⚫'} {p['name']}",
+            text=f"{'🟢' if p['online'] else '⚫'} {p['name']}",
             callback_data=f"pc_{p['id']}",
         )] for p in pcs
-    ] + [[InlineKeyboardButton("⬅️ Назад", callback_data="main")]])
+    ] + [[InlineKeyboardButton(text="⬅️ Назад", callback_data="main")]])
     await c.message.edit_text("🖥 Твои ПК:", reply_markup=kb)
     await c.answer()
 
@@ -96,11 +96,11 @@ async def cb_main(c: CallbackQuery):
 async def cb_pc(c: CallbackQuery):
     pc_id = int(c.data.split("_")[1])
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton("ℹ️ Инфо", callback_data=f"cmd_{pc_id}_sysinfo")],
-        [InlineKeyboardButton("📸 Скриншот", callback_data=f"cmd_{pc_id}_screenshot")],
-        [InlineKeyboardButton("🔊 +10", callback_data=f"cmd_{pc_id}_volup")],
-        [InlineKeyboardButton("🔇 Mute", callback_data=f"cmd_{pc_id}_mute")],
-        [InlineKeyboardButton("⬅️ Назад", callback_data="my_pcs")],
+        [InlineKeyboardButton(text="ℹ️ Инфо", callback_data=f"cmd_{pc_id}_sysinfo")],
+        [InlineKeyboardButton(text="📸 Скриншот", callback_data=f"cmd_{pc_id}_screenshot")],
+        [InlineKeyboardButton(text="🔊 +10", callback_data=f"cmd_{pc_id}_volup")],
+        [InlineKeyboardButton(text="🔇 Mute", callback_data=f"cmd_{pc_id}_mute")],
+        [InlineKeyboardButton(text="⬅️ Назад", callback_data="my_pcs")],
     ])
     await c.message.edit_text(f"🖥 Управление ПК «{pcs_name(pc_id)}»:", reply_markup=kb)
     await c.answer()
