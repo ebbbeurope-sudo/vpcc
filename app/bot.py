@@ -10,6 +10,7 @@ from aiogram import Bot, Dispatcher, Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import BufferedInputFile
 
 print(f"[VERSIONS] aiogram={aiogram.__version__} pydantic={pydantic.VERSION}", flush=True)
 
