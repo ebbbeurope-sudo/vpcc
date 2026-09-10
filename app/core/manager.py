@@ -49,7 +49,7 @@ async def send_command(token: str, command: dict) -> dict:
     print(f"[MGR] send cmd to {token[:6]}, replies={list(_replies.keys())}", flush=True)
     try:
         await ws.send_text(json.dumps(command))
-        return await asyncio.wait_for(fut, timeout=15)
+        return await asyncio.wait_for(fut, timeout=45)
     except asyncio.TimeoutError:
         print(f"[MGR] timeout, reply still pending for {token[:6]}", flush=True)
         return {"ok": False, "error": "timeout"}
