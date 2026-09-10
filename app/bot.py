@@ -2,12 +2,16 @@ import os
 import random
 import string
 import time
+import traceback
 
-import httpx
+import pydantic
+import aiogram
 from aiogram import Bot, Dispatcher, Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+print(f"[VERSIONS] aiogram={aiogram.__version__} pydantic={pydantic.VERSION}", flush=True)
 
 from app.core import database
 from app.core.config import SERVER_URL
@@ -40,7 +44,7 @@ async def cmd_start(m: Message):
         )
         print("[START] answered ok", flush=True)
     except Exception as e:
-        print(f"[START] error: {e}", flush=True)
+        print(f"[START] error: {e}\n{traceback.format_exc()}", flush=True)
 
 
 @router.callback_query(lambda c: c.data == "add_pc")
